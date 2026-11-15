@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trackermu</title>
+  <link rel="icon" href="favicon.png"
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- HALAMAN 1: input nama -->
+  <section id="halaman-nama" class="halaman-nama">
+    <div class="kotak-nama">
+      <span class="titik"></span>
+      <h1>Trackermu Everyday.</h1>
+      <p>Tracker olahraga untuk mahasiswa. Badan sehat, fokus belajar jalan terus.</p>
+      <form id="form-nama">
+        <label for="input-nama">Siapa namamu?</label>
+        <input type="text" id="input-nama" maxlength="20" placeholder="Contoh: Budi" required>
+        <button type="submit" class="tombol">Lanjut</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- HALAMAN 2: isi utama website -->
+  <div id="halaman-utama" class="sembunyi">
+
+    <nav>
+      <span class="titik"></span>
+      <div class="menu">
+        <a href="#beranda">Beranda</a>
+        <a href="#catat">Catat</a>
+        <a href="#riwayat">Riwayat</a>
+        <a href="#resep">Resep</a>
+      </div>
+      <span class="titik"></span>
+    </nav>
+
+    <header id="beranda" class="hero">
+      <div class="hero-teks">
+        <h1 id="sapaan"></h1>
+        <p>Catat olahragamu, pantau targetmu, dan cari ide makanan sehat. Tubuh yang bugar bikin kuliah lebih fokus.</p>
+        <a href="#catat" class="tombol">Mulai catat</a>
+      </div>
+      <div class="hero-ring">
+        <div class="ring" id="ring">
+          <div class="ring-isi">
+            <strong id="persen">0%</strong>
+            <small>target minggu ini</small>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="pita"><div class="pita-isi">Lari • Jalan • Bersepeda • Gym • Yoga • Renang • Futsal • Badminton • Lari • Jalan • Bersepeda • Gym • Yoga • Renang • Futsal • Badminton •</div></div>
+
+    <main>
+      <section class="statistik">
+        <div class="kartu muncul"><small>Menit minggu ini</small><strong id="stat-menit">0</strong></div>
+        <div class="kartu muncul"><small>Kalori (estimasi)</small><strong id="stat-kalori">0</strong></div>
+        <div class="kartu muncul"><small>Streak hari</small><strong id="stat-streak">0</strong></div>
+        <div class="kartu muncul"><small>Rata-rata fokus</small><strong id="stat-fokus">-</strong></div>
+      </section>
+
+      <section id="catat" class="dua-kolom">
+        <div class="kartu muncul">
+          <h2>Catat olahraga</h2>
+          <form id="form-catat">
+            <label for="jenis">Jenis olahraga</label>
+            <select id="jenis"></select>
+            <label for="menit">Durasi (menit)</label>
+            <input type="number" id="menit" min="1" max="300" required>
+            <label for="tanggal">Tanggal</label>
+            <input type="date" id="tanggal" required>
+            <label for="fokus">Fokus belajar setelahnya</label>
+            <select id="fokus">
+              <option value="5">5 – Sangat fokus</option>
+              <option value="4">4 – Fokus</option>
+              <option value="3" selected>3 – Biasa saja</option>
+              <option value="2">2 – Kurang fokus</option>
+              <option value="1">1 – Sulit fokus</option>
+            </select>
+            <button type="submit" class="tombol">Simpan</button>
+          </form>
+        </div>
+
+        <div class="kartu muncul">
+          <h2>Target mingguan</h2>
+          <p class="kecil">Anjuran umum orang dewasa sekitar 150 menit olahraga per minggu.</p>
+          <form id="form-target">
+            <label for="target">Target (menit per minggu)</label>
+            <input type="number" id="target" min="10" max="2000" required>
+            <button type="submit" class="tombol">Simpan target</button>
+          </form>
+          <div class="bar"><div class="bar-isi" id="bar-isi"></div></div>
+          <p class="kecil" id="teks-target"></p>
+        </div>
+      </section>
+
+      <section id="riwayat" class="kartu muncul">
+        <h2>Riwayat olahraga</h2>
+        <div id="daftar-riwayat"></div>
+      </section>
+
+      <section id="resep" class="kartu muncul">
+        <h2>Resep meal prep &amp; makanan sehat</h2>
+        <p class="kecil">Data resep diambil langsung dari web (TheMealDB). Cari pakai kata bahasa Inggris, contoh: chicken, egg, salmon.</p>
+        <form id="form-resep" class="baris-cari">
+          <input type="text" id="kata-resep" placeholder="Cari resep, misalnya chicken" required>
+          <button type="submit" class="tombol">Cari</button>
+        </form>
+        <div class="chip-wrap">
+          <button type="button" class="chip" onclick="cariDariChip('chicken')">Ayam</button>
+          <button type="button" class="chip" onclick="cariDariChip('egg')">Telur</button>
+          <button type="button" class="chip" onclick="cariDariChip('salmon')">Salmon</button>
+          <button type="button" class="chip" onclick="cariDariChip('rice')">Nasi</button>
+          <button type="button" class="chip" onclick="cariDariChip('salad')">Salad</button>
+        </div>
+        <div id="hasil-resep" class="grid-resep"></div>
+        <p class="kecil"><a href="https://www.google.com/search?q=resep+meal+prep+sehat+untuk+mahasiswa" target="_blank" rel="noopener">Cari ide meal prep lain di Google →</a></p>
+      </section>
+    </main>
+
+    <footer>
+      <p>Trackermu Everyday.</p>
+      <button type="button" class="tombol-kecil" id="ganti-nama">Bukan kamu? Ganti nama</button>
+    </footer>
+  </div>
+
+  <!-- Jendela detail resep -->
+  <dialog id="dialog-resep">
+    <div id="isi-dialog"></div>
+    <button type="button" class="tombol" onclick="document.getElementById('dialog-resep').close()">Tutup</button>
+  </dialog>
+
+  <!-- Notifikasi kecil -->
+  <div id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
