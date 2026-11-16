@@ -1,24 +1,18 @@
-// ===== DATA AWAL =====
-// Estimasi kalori per menit untuk tiap jenis olahraga (angka kasar)
 var kaloriPerMenit = {
   "Lari": 10, "Jalan": 4, "Bersepeda": 7, "Gym": 6,
   "Yoga": 3, "Renang": 9, "Futsal": 9, "Badminton": 6
 };
 
-// Ambil data yang tersimpan di browser
 var nama = localStorage.getItem("gerak_nama");
 var riwayat = JSON.parse(localStorage.getItem("gerak_riwayat") || "[]");
 var target = Number(localStorage.getItem("gerak_target")) || 150;
 
-// Alamat API resep gratis dari web
 var URL_API = "https://www.themealdb.com/api/json/v1/1/";
 
-// ===== FUNGSI BANTU =====
 function ambil(id) {
   return document.getElementById(id);
 }
 
-// Mencegah teks yang diketik berisi kode HTML
 function aman(teks) {
   return String(teks).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
@@ -30,7 +24,6 @@ function tanggalHariIni() {
   return d.getFullYear() + "-" + bulan + "-" + hari;
 }
 
-// Berapa hari yang lalu sebuah tanggal (0 = hari ini)
 function selisihHari(tgl) {
   var a = new Date(tanggalHariIni() + "T00:00:00");
   var b = new Date(tgl + "T00:00:00");
@@ -50,7 +43,6 @@ function simpanRiwayat() {
   localStorage.setItem("gerak_riwayat", JSON.stringify(riwayat));
 }
 
-// ===== HALAMAN 1 DAN 2 =====
 function tampilkanHalaman() {
   if (nama) {
     ambil("halaman-nama").classList.add("sembunyi");
@@ -79,7 +71,6 @@ ambil("ganti-nama").addEventListener("click", function () {
   tampilkanHalaman();
 });
 
-// ===== CATAT OLAHRAGA =====
 function isiPilihanJenis() {
   var pilihan = "";
   for (var jenis in kaloriPerMenit) {
@@ -126,7 +117,6 @@ function hapusCatatan(id) {
   tampilkanToast("Catatan dihapus");
 }
 
-// ===== STATISTIK =====
 function adaLatihan(selisih) {
   return riwayat.some(function (r) {
     return selisihHari(r.tanggal) === selisih;
@@ -139,7 +129,6 @@ function tampilkanStatistik() {
   var fokusTotal = 0;
   var fokusJumlah = 0;
 
-  // Hitung data 7 hari terakhir
   riwayat.forEach(function (r) {
     var s = selisihHari(r.tanggal);
     if (s >= 0 && s <= 6) {
@@ -150,11 +139,10 @@ function tampilkanStatistik() {
     }
   });
 
-  // Hitung streak (hari berturut-turut berolahraga)
   var streak = 0;
   var hariCek = 0;
   if (!adaLatihan(0)) {
-    hariCek = 1; // kalau hari ini belum, mulai hitung dari kemarin
+    hariCek = 1; 
   }
   while (adaLatihan(hariCek)) {
     streak++;
@@ -173,7 +161,6 @@ function tampilkanStatistik() {
   ambil("teks-target").textContent = menit + " dari " + target + " menit minggu ini";
 }
 
-// ===== RIWAYAT =====
 function tampilkanRiwayat() {
   var urut = riwayat.slice().sort(function (a, b) {
     return b.tanggal.localeCompare(a.tanggal) || b.id - a.id;
@@ -200,7 +187,6 @@ function tampilkanSemua() {
   tampilkanRiwayat();
 }
 
-// ===== RESEP DARI WEB =====
 function cariResep(kata) {
   var hasil = ambil("hasil-resep");
   hasil.innerHTML = "<p class='kecil'>Mencari resep...</p>";
@@ -215,7 +201,7 @@ function cariResep(kata) {
         return;
       }
       var html = "";
-      // Tampilkan maksimal 8 resep
+
       data.meals.slice(0, 8).forEach(function (meal) {
         html += "<div class='resep-kartu'>";
         html += "<img src='" + meal.strMealThumb + "/preview' alt='" + aman(meal.strMeal) + "'>";
@@ -239,7 +225,6 @@ function lihatResep(id) {
     .then(function (data) {
       var meal = data.meals[0];
 
-      // Kumpulkan bahan (API menyimpan sampai 20 bahan)
       var bahan = "";
       for (var i = 1; i <= 20; i++) {
         var namaBahan = meal["strIngredient" + i];
@@ -273,13 +258,9 @@ ambil("form-resep").addEventListener("submit", function (e) {
   cariResep(ambil("kata-resep").value.trim());
 });
 
-// ===== EFEK FADE SAAT SCROLL =====
-// Elemen ber-class "muncul" awalnya transparan. Saat masuk layar,
-// kita tambahkan class "terlihat" supaya muncul perlahan (lihat style.css).
 function aktifkanFadeScroll() {
   var elemen = document.querySelectorAll(".muncul");
 
-  // Kalau browser terlalu lama, tampilkan semuanya saja
   if (!("IntersectionObserver" in window)) {
     elemen.forEach(function (e) {
       e.classList.add("terlihat");
@@ -290,9 +271,9 @@ function aktifkanFadeScroll() {
   var pengamat = new IntersectionObserver(function (daftar) {
     daftar.forEach(function (item) {
       if (item.isIntersecting) {
-        item.target.classList.add("terlihat"); // masuk layar: muncul
+        item.target.classList.add("terlihat"); 
       } else {
-        item.target.classList.remove("terlihat"); // keluar layar: reset, siap muncul lagi
+        item.target.classList.remove("terlihat");
       }
     });
   }, { threshold: 0.15 });
@@ -302,10 +283,9 @@ function aktifkanFadeScroll() {
   });
 }
 
-// ===== MULAI =====
 isiPilihanJenis();
 ambil("tanggal").value = tanggalHariIni();
 ambil("target").value = target;
 tampilkanHalaman();
-cariResep("chicken"); // tampilkan resep awal
+cariResep("chicken");
 aktifkanFadeScroll();
